@@ -29,7 +29,7 @@
                   feedback-link="https://devforum.zoom.us/c/zoom-apps">
     
       <google-codelab-step label="Before you begin" duration="0">
-        <p>This codelab is part 9 of 9 in a series focused on extending a Next.js Task Manager app into the Zoom Developer Platform. Throughout this series, you&#39;ll learn how to create a feature-rich Zoom Marketplace app that both integrates third-party applications into Zoom products and brings Zoom functionality into third-party applications. In this series, you will learn core concepts for building engaging experiences within the Zoom Workplace—including Zoom Apps, Team Chat, chatbots, and features for deep linking from browser to Zoom client.</p>
+        <p>This codelab is part 10 of 10 in a series focused on extending a Next.js Task Manager app into the Zoom Developer Platform. Throughout this series, you&#39;ll learn how to create a feature-rich Zoom Marketplace app that both integrates third-party applications into Zoom products and brings Zoom functionality into third-party applications. In this series, you will learn core concepts for building engaging experiences within the Zoom Workplace—including Zoom Apps, Team Chat, chatbots, and features for deep linking from browser to Zoom client.</p>
 <h2 is-upgraded>How to use this codelab</h2>
 <p>This codelab is organized by product to help you quickly find information about integrating your app into the Zoom Workplace platform. Each section provides concise, practical code examples that you can adapt to your use cases, along with links to deeper resources on specific topics. For implementation guidance, you can focus on the specific topics most relevant to your needs.</p>
 <p>Part 1: <a href="https://just-zoomit.github.io/multi-feature-zoom-manifest-file/#0" target="_blank">Create a multi-feature Zoom app with a manifest file: Team Chat, Chatbot and Meetings</a></p>
@@ -278,152 +278,6 @@ export default function Sidebar() {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Zoom App SDK API Demo Page: Zoom APP SDK APIs" duration="0">
-        <p>In this section, you&#39;ll create a component to interact with the Zoom Apps SDK APIs. Start by creating a new <code>zoom-app-sdk directory</code>, and move the <code>components/zoomapp-sdk/zoom-app.tsx</code> file into it. This directory will serve as the location for all in-client pages related to the Zoom Apps SDK.</p>
-<p><strong>File Path:</strong>: <code>components/zoomapp-sdk/zoom-app-demo-apis.tsx</code></p>
-<pre><code language="language-javascript" class="language-javascript">// components/ZoomApiDemo.tsx
-&#34;use client&#34;;
-
-import zoomSdk from &#34;@zoom/appssdk&#34;;
-
-const apis = [
-    {
-        name: &#34;setVirtualBackground&#34;,
-        options: {
-          fileUrl:
-            &#34;https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&amp;fit=crop&amp;w=983&amp;q=80&#34;,
-        },
-      },
-      { name: &#34;removeVirtualBackground&#34; },
-      { name: &#34;openUrl&#34;, options: { url: &#34;https://www.google.com/&#34; } },
-      {
-        name: &#34;showNotification&#34;,
-        options: {
-          type: &#34;info&#34;,
-          title: &#34;Hello Zoom Apps&#34;,
-          message: &#34;Testing notification&#34;,
-        },
-      },
-      { name: &#34;sendAppInvitationToAllParticipants&#34; },
-      { name: &#34;sendAppInvitationToMeetingOwner&#34; },
-      { name: &#34;showAppInvitationDialog&#34; },
-      { name: &#34;getMeetingParticipants&#34; },
-      { name: &#34;getMeetingUUID&#34; },
-      { name: &#34;getMeetingJoinUrl&#34; },
-      { name: &#34;listCameras&#34; },
-      { name: &#34;expandApp&#34; },
-      { name: &#34;allowParticipantToRecord&#34; },
-      { name: &#34;getRecordingContext&#34; },
-      {
-        name: &#34;cloudRecording&#34;,
-        buttonName: &#34;cloudRecording (start)&#34;,
-        options: { action: &#34;start&#34; },
-      },
-      {
-        name: &#34;shareApp-start&#34;,
-        buttonName: &#34;shareApp (start)&#34;,
-        options: { action: &#34;start&#34; },
-      },
-      {
-        name: &#34;shareApp-stop&#34;,
-        buttonName: &#34;shareApp (stop)&#34;,
-        options: { action: &#34;stop&#34; },
-      },
-].sort((a, b) =&gt; a.name.localeCompare(b.name));
-
-type ZoomApiOption = {
-    name: string;
-    buttonName?: string;
-    options?: any;
-  };
-
-export const invokeZoomAppsSdk = (api: ZoomApiOption) =&gt; async () =&gt; {
-    const { name, buttonName = &#39;&#39;, options = null } = api;
-    try {
-      const result = await (zoomSdk as any)[name](options);
-      console.log(`${buttonName || name} success:`, result);
-    } catch (error) {
-      console.error(`${buttonName || name} error:`, error);
-    }
-  };
-
-export default function ZoomApiDemo() {
-  return (
-    &lt;div className=&#34;border rounded-lg p-4 mb-6 overflow-y-auto max-h-[500px]&#34;&gt;
-      &lt;h2 className=&#34;text-xl font-semibold mb-4&#34;&gt;Zoom Apps SDK API Demo&lt;/h2&gt;
-      &lt;div className=&#34;grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3&#34;&gt;
-        {apis.map((api) =&gt; (
-          &lt;button
-            key={api.name}
-            onClick={invokeZoomAppsSdk(api)}
-            className=&#34;bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 rounded shadow&#34;
-          &gt;
-            {api.name}
-          &lt;/button&gt;
-        ))}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  );
-}
-
-
-</code></pre>
-<h2 is-upgraded>Use it in ZoomContextPage</h2>
-<p>First let&#39;s update your page to include the demo:</p>
-<p><strong>File Path:</strong>: <code>app/zoomapp/zcx/page.tsx</code></p>
-<pre><code language="language-javascript" class="language-javascript">import ZoomApiDemo from &#34;@/components/zoomapp-sdk/zoom-app-demo-apis&#34;;
-</code></pre>
-<h3 is-upgraded>Render above the contextData section</h3>
-<p>Then, in your return block, render it above the contextData section:</p>
-<pre><code language="language-javascript" class="language-javascript">return (
-    &lt;div className=&#34;p-6 &#34;&gt;
-      &lt;p className=&#34;mb-4&#34;&gt;
-        Pathname is: &lt;strong&gt;{location}&lt;/strong&gt;
-        &lt;br /&gt;
-        Params are: &lt;strong&gt;{JSON.stringify(params)}&lt;/strong&gt;
-      &lt;/p&gt;
-      &lt;h1 className=&#34;text-2xl font-bold mb-4&#34;&gt;Zoom Context Viewer&lt;/h1&gt;
-      
-      &lt;p className=&#34;mb-4&#34;&gt;
-   
-        Use the buttons below to interact with the Zoom Apps SDK and view the current Zoom App context.
-        API responses will be shown in alerts and logged to the console.
-      &lt;/p&gt;
-      
-
-      {error &amp;&amp; (
-        &lt;div className=&#34;text-red-600 mb-4&#34;&gt;
-          &lt;h2 className=&#34;font-semibold&#34;&gt;Error:&lt;/h2&gt;
-          &lt;pre className=&#34;whitespace-pre-wrap text-sm&#34;&gt;{JSON.stringify(error, null, 2)}&lt;/pre&gt;
-        &lt;/div&gt;
-      )}
-      
-
-        {/* Scrollable API demo section */}
-      &lt;ZoomApiDemo /&gt;
-
-      &lt;p className=&#34;mb-4&#34;&gt;  This section provides a live view of the Zoom App context with using the Zoom Apps SDK.&lt;/p&gt;
-
-      {contextData ? (
-        &lt;div className=&#34;space-y-6&#34;&gt;
-          &lt;ContextBlock title=&#34;Supported JS APIs&#34; data={contextData.supportedApis} /&gt;
-          &lt;ContextBlock title=&#34;Running Context&#34; data={contextData.runningContext} /&gt;
-          &lt;ContextBlock title=&#34;App Context&#34; data={contextData.appContext} /&gt;
-          &lt;ContextBlock title=&#34;User Context&#34; data={contextData.userContext} /&gt;
-          &lt;ContextBlock title=&#34;Meeting Context&#34; data={contextData.meetingContext} /&gt;
-          &lt;ContextBlock title=&#34;Meeting UUID&#34; data={contextData.meetingUUID} /&gt;
-        &lt;/div&gt;
-      ) : (
-        !error &amp;&amp; &lt;p className=&#34;text-gray-500&#34;&gt;Loading Zoom context...&lt;/p&gt;
-      )}
-    &lt;/div&gt;
-  );
-
-</code></pre>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Zoom App App Context Page: Zoom Context" duration="0">
         <p>In this section, you&#39;ll set up a page to display Zoom running context data.</p>
 <p><strong>File Path:</strong>: app/zoomapp/zcx/page.tsx</p>
@@ -583,6 +437,152 @@ function ContextBlock({ title, data }: { title: string; data: any }) {
   );
 }
 
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Zoom App SDK API Demo Page: Zoom APP SDK APIs" duration="0">
+        <p>In this section, you&#39;ll create a component to interact with the Zoom Apps SDK APIs. Start by creating a new <code>zoom-app-sdk directory</code>, and move the <code>components/zoomapp-sdk/zoom-app.tsx</code> file into it. This directory will serve as the location for all in-client pages related to the Zoom Apps SDK.</p>
+<p><strong>File Path:</strong>: <code>components/zoomapp-sdk/zoom-app-demo-apis.tsx</code></p>
+<pre><code language="language-javascript" class="language-javascript">// components/ZoomApiDemo.tsx
+&#34;use client&#34;;
+
+import zoomSdk from &#34;@zoom/appssdk&#34;;
+
+const apis = [
+    {
+        name: &#34;setVirtualBackground&#34;,
+        options: {
+          fileUrl:
+            &#34;https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&amp;fit=crop&amp;w=983&amp;q=80&#34;,
+        },
+      },
+      { name: &#34;removeVirtualBackground&#34; },
+      { name: &#34;openUrl&#34;, options: { url: &#34;https://www.google.com/&#34; } },
+      {
+        name: &#34;showNotification&#34;,
+        options: {
+          type: &#34;info&#34;,
+          title: &#34;Hello Zoom Apps&#34;,
+          message: &#34;Testing notification&#34;,
+        },
+      },
+      { name: &#34;sendAppInvitationToAllParticipants&#34; },
+      { name: &#34;sendAppInvitationToMeetingOwner&#34; },
+      { name: &#34;showAppInvitationDialog&#34; },
+      { name: &#34;getMeetingParticipants&#34; },
+      { name: &#34;getMeetingUUID&#34; },
+      { name: &#34;getMeetingJoinUrl&#34; },
+      { name: &#34;listCameras&#34; },
+      { name: &#34;expandApp&#34; },
+      { name: &#34;allowParticipantToRecord&#34; },
+      { name: &#34;getRecordingContext&#34; },
+      {
+        name: &#34;cloudRecording&#34;,
+        buttonName: &#34;cloudRecording (start)&#34;,
+        options: { action: &#34;start&#34; },
+      },
+      {
+        name: &#34;shareApp-start&#34;,
+        buttonName: &#34;shareApp (start)&#34;,
+        options: { action: &#34;start&#34; },
+      },
+      {
+        name: &#34;shareApp-stop&#34;,
+        buttonName: &#34;shareApp (stop)&#34;,
+        options: { action: &#34;stop&#34; },
+      },
+].sort((a, b) =&gt; a.name.localeCompare(b.name));
+
+type ZoomApiOption = {
+    name: string;
+    buttonName?: string;
+    options?: any;
+  };
+
+export const invokeZoomAppsSdk = (api: ZoomApiOption) =&gt; async () =&gt; {
+    const { name, buttonName = &#39;&#39;, options = null } = api;
+    try {
+      const result = await (zoomSdk as any)[name](options);
+      console.log(`${buttonName || name} success:`, result);
+    } catch (error) {
+      console.error(`${buttonName || name} error:`, error);
+    }
+  };
+
+export default function ZoomApiDemo() {
+  return (
+    &lt;div className=&#34;border rounded-lg p-4 mb-6 overflow-y-auto max-h-[500px]&#34;&gt;
+      &lt;h2 className=&#34;text-xl font-semibold mb-4&#34;&gt;Zoom Apps SDK API Demo&lt;/h2&gt;
+      &lt;div className=&#34;grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3&#34;&gt;
+        {apis.map((api) =&gt; (
+          &lt;button
+            key={api.name}
+            onClick={invokeZoomAppsSdk(api)}
+            className=&#34;bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 rounded shadow&#34;
+          &gt;
+            {api.name}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+
+</code></pre>
+<h2 is-upgraded>Use it in ZoomContextPage</h2>
+<p>First let&#39;s update your page to include the demo:</p>
+<p><strong>File Path:</strong>: <code>app/zoomapp/zcx/page.tsx</code></p>
+<pre><code language="language-javascript" class="language-javascript">import ZoomApiDemo from &#34;@/components/zoomapp-sdk/zoom-app-demo-apis&#34;;
+</code></pre>
+<h3 is-upgraded>Render above the contextData section</h3>
+<p>Then, in your return block, render it above the contextData section:</p>
+<pre><code language="language-javascript" class="language-javascript">return (
+    &lt;div className=&#34;p-6 &#34;&gt;
+      &lt;p className=&#34;mb-4&#34;&gt;
+        Pathname is: &lt;strong&gt;{location}&lt;/strong&gt;
+        &lt;br /&gt;
+        Params are: &lt;strong&gt;{JSON.stringify(params)}&lt;/strong&gt;
+      &lt;/p&gt;
+      &lt;h1 className=&#34;text-2xl font-bold mb-4&#34;&gt;Zoom Context Viewer&lt;/h1&gt;
+      
+      &lt;p className=&#34;mb-4&#34;&gt;
+   
+        Use the buttons below to interact with the Zoom Apps SDK and view the current Zoom App context.
+        API responses will be shown in alerts and logged to the console.
+      &lt;/p&gt;
+      
+
+      {error &amp;&amp; (
+        &lt;div className=&#34;text-red-600 mb-4&#34;&gt;
+          &lt;h2 className=&#34;font-semibold&#34;&gt;Error:&lt;/h2&gt;
+          &lt;pre className=&#34;whitespace-pre-wrap text-sm&#34;&gt;{JSON.stringify(error, null, 2)}&lt;/pre&gt;
+        &lt;/div&gt;
+      )}
+      
+
+        {/* Scrollable API demo section */}
+      &lt;ZoomApiDemo /&gt;
+
+      &lt;p className=&#34;mb-4&#34;&gt;  This section provides a live view of the Zoom App context with using the Zoom Apps SDK.&lt;/p&gt;
+
+      {contextData ? (
+        &lt;div className=&#34;space-y-6&#34;&gt;
+          &lt;ContextBlock title=&#34;Supported JS APIs&#34; data={contextData.supportedApis} /&gt;
+          &lt;ContextBlock title=&#34;Running Context&#34; data={contextData.runningContext} /&gt;
+          &lt;ContextBlock title=&#34;App Context&#34; data={contextData.appContext} /&gt;
+          &lt;ContextBlock title=&#34;User Context&#34; data={contextData.userContext} /&gt;
+          &lt;ContextBlock title=&#34;Meeting Context&#34; data={contextData.meetingContext} /&gt;
+          &lt;ContextBlock title=&#34;Meeting UUID&#34; data={contextData.meetingUUID} /&gt;
+        &lt;/div&gt;
+      ) : (
+        !error &amp;&amp; &lt;p className=&#34;text-gray-500&#34;&gt;Loading Zoom context...&lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  );
 
 </code></pre>
 
