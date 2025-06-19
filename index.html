@@ -152,13 +152,16 @@ npm run dev
 
       </google-codelab-step>
     
-      <google-codelab-step label="Nagviation" duration="0">
-        <p>Create navigation using Tailwind and ShadCN</p>
+      <google-codelab-step label="Navigation: Setup app context and messaging pages" duration="0">
+        <p>Create a navigation UI using Tailwind CSS and ShadCN components. You&#39;ll build an AppContext page to:</p>
+<p>Fetch and display Zoom App context data</p>
+<p>Demonstrate collaborative APIs from the Zoom Apps SDK</p>
+<p>You&#39;ll also set up a separate page to demo messaging methods such as sending messages, previews, or broadcast interactions.</p>
 <p><strong>File Path:</strong>: <code>components/sidebar.tsx</code></p>
 <pre><code language="language-javascript" class="language-javascript">&#34;use client&#34;;
 
 import { useState } from &#34;react&#34;;
-import { Home, Settings, Users, Menu, Newspaper, ChartNoAxesCombined } from &#34;lucide-react&#34;;
+import { Home, Settings, Users, Menu, Newspaper, ChartNoAxesCombined,Send } from &#34;lucide-react&#34;;
 import Link from &#34;next/link&#34;;
 import { cn } from &#34;@/lib/utils&#34;;
 
@@ -166,6 +169,7 @@ const navItems = [
   { href: &#34;/&#34;, label: &#34;Home&#34;, icon: Home },
   { href: &#34;/users-contacts&#34;, label: &#34;Users&#34;, icon: Users },
   { href: &#34;/zoomapp/zcx&#34;, label: &#34;App Context&#34;, icon: Newspaper },
+  { href: &#34;/zoomapp/zoom-card&#34;, label: &#34;Message&#34;, icon: Send },
   { href: &#34;/zoomapp/report&#34;, label: &#34;Report&#34;, icon: ChartNoAxesCombined },
   { href: &#34;/settings&#34;, label: &#34;Settings&#34;, icon: Settings },
 ];
@@ -207,8 +211,8 @@ export default function Sidebar() {
 }
 
 </code></pre>
-<h2 is-upgraded>Use it in Layout component</h2>
-<p>First let&#39;s update your page to include the demo:</p>
+<h2 is-upgraded>Add sidebar navigation to the layout component</h2>
+<p>In this section, you will update your app layout to include a Sidebar using Tailwind CSS and ShadCN UI. This Sidebar will provide navigation to key demo pages like App Context and Messaging APIs.</p>
 <p><strong>File Path:</strong>: <code>app/layout.tsx</code></p>
 <pre><code language="language-javascript" class="language-javascript">import Sidebar from &#34;@/components/sidebar&#34;;
 </code></pre>
@@ -275,8 +279,40 @@ export default function Sidebar() {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Zoom App App Context Page: Zoom Context" duration="0">
-        <p>In this section, you&#39;ll set up a page to display Zoom running context data.  Start by creating a new zoom-app-sdk directory, and move the components/zoomapp-sdk/zoom-app.tsx file into it. This directory will serve as the location for all in-client pages related to the Zoom Apps SDK.</p>
+      <google-codelab-step label="Zoom App context page: Display Zoom context" duration="0">
+        <p>In this section, you&#39;ll create a page to <strong>fetch and display Zoom App context data</strong> using the Zoom Apps SDK. This includes:</p>
+<ul>
+<li>User information</li>
+<li>Locale and environment details</li>
+<li>Meeting ID and context (when in a meeting)</li>
+<li>Supported Zoom SDK capabilities</li>
+</ul>
+<p>This page helps you debug and visualize the current Zoom runtime environment directly inside your app.</p>
+<h2 is-upgraded>Organize SDK components</h2>
+<p>Start by organizing your project structure for clarity and scalability.</p>
+<ol type="1">
+<li><strong>Create a new directory</strong> for Zoom SDK-related components:<pre><code>components/zoom-app-sdk/
+</code></pre>
+</li>
+<li><strong>Move your existing file</strong> into this new folder:<pre><code language="language-bash" class="language-bash">mv components/zoomapp-sdk/zoom-app.tsx components/zoom-app-sdk/zoom-app.tsx
+</code></pre>
+💡 This folder will serve as the central place for all in-client pages and components using the Zoom Apps SDK.</li>
+</ol>
+<h2 is-upgraded>Updated folder structure</h2>
+<pre><code language="language-bash" class="language-bash">components/
+├── zoom-app-sdk/
+│   └── zoom-app.tsx   ← contains logic to retrieve and display context
+├── layout.tsx
+└── ...
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create App Context page" duration="0">
+        <p>In this section, you&#39;ll build a page to display Zoom App context data, including user info, locale, meeting ID, supported APIs, and environment details provided by the Zoom Apps SDK.</p>
+<p>This is useful for debugging, demos, and understanding how your app is being used within different Zoom contexts (e.g., in a meeting vs. outside a meeting).</p>
+<h2 is-upgraded>Step: Add ZoomContextPage component</h2>
 <p><strong>File Path:</strong>: app/zoomapp/zcx/page.tsx</p>
 <pre><code language="language-javascript" class="language-javascript">&#34;use client&#34;;
 
